@@ -1,6 +1,7 @@
 package com.harzan7.calculator.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -53,3 +54,15 @@ fun CalculatorTheme(
         content = content
     )
 }
+
+val ColorScheme.clearButton: Color
+    @Composable get() = error
+
+val ColorScheme.operationButton: Color
+    @Composable get() = secondary
+
+val ColorScheme.equalsButton: Color
+    @Composable get() = tertiary
+
+val ColorScheme.numberButton: Color
+    @Composable get() = primary
