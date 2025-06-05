@@ -6,19 +6,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.harzan7.calculator.ui.theme.CalculatorTheme
+import com.harzan7.calculator.ui.theme.clearButton
+import com.harzan7.calculator.ui.theme.equalsButton
+import com.harzan7.calculator.ui.theme.numberButton
+import com.harzan7.calculator.ui.theme.operationButton
 
 val buttonList = listOf(
     "C", "(", ")", "÷",
@@ -91,10 +101,54 @@ fun CalculatorContent(
             modifier = Modifier.padding(8.dp)
         ) {
             items(buttonList) {
-                // TODO: CalculatorButton call
+                CalculatorButton(
+                    btn = it,
+                    onClick = {
+                        //TODO: viewModel.onButtonClick
+                    }
+                )
             }
         }
 
+    }
+}
+
+@Composable
+fun CalculatorButton(btn: String, onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = Modifier
+            .padding(8.dp)
+            .size(80.dp),
+        shape = CircleShape,
+        containerColor = getButtonColor(btn),
+        contentColor = getButtonTextColor(btn),
+    ) {
+        Text(
+            text = btn,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+@Composable
+fun getButtonColor(btn: String): Color {
+    return when (btn) {
+        "C", "AC" -> MaterialTheme.colorScheme.clearButton
+        "÷", "×", "+", "−" -> MaterialTheme.colorScheme.operationButton
+        "=" -> MaterialTheme.colorScheme.equalsButton
+        else -> MaterialTheme.colorScheme.numberButton
+    }
+}
+
+@Composable
+fun getButtonTextColor(btn: String): Color {
+    return when (btn) {
+        "C", "AC" -> MaterialTheme.colorScheme.onError
+        "÷", "×", "+", "−" -> MaterialTheme.colorScheme.onSecondary
+        "=" -> MaterialTheme.colorScheme.onTertiary
+        else -> MaterialTheme.colorScheme.onPrimary
     }
 }
 
