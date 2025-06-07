@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.mozilla.javascript.Context
+import org.mozilla.javascript.Scriptable
 
 class CalculatorViewModel: ViewModel() {
 
@@ -47,5 +49,17 @@ class CalculatorViewModel: ViewModel() {
                 Log.i("Result", resultText.value)
             } catch (_: Exception) {}
         }
+    }
+
+    private fun calculateResult(equation: String): String {
+        val context: Context = Context.enter()
+        context.isInterpretedMode = true
+        val scriptable: Scriptable = context.initStandardObjects()
+        var finalResult = context.evaluateString(scriptable, equation, "Javascript", 1, null).toString()
+        if (finalResult.endsWith(".0")) {
+            finalResult = finalResult.replace(".0", "")
+        }
+
+        return finalResult
     }
 }
