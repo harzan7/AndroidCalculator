@@ -45,7 +45,7 @@ class CalculatorViewModel: ViewModel() {
 
             // Calculate Result
             try {
-                // TODO: call function to calculate the result
+                _resultText.value = calculateResult(_equationText.value)
                 Log.i("Result", resultText.value)
             } catch (_: Exception) {}
         }
