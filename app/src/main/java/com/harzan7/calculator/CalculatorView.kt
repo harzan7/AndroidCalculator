@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,11 +25,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.harzan7.calculator.ui.theme.CalculatorTheme
 import com.harzan7.calculator.ui.theme.clearButton
 import com.harzan7.calculator.ui.theme.equalsButton
 import com.harzan7.calculator.ui.theme.numberButton
 import com.harzan7.calculator.ui.theme.operationButton
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 val buttonList = listOf(
     "C", "(", ")", "÷",
@@ -47,7 +50,7 @@ fun CalculatorApp() {
 
 @Composable
 fun CalculatorScreen(
-    // TODO: viewModel
+    viewModel: CalculatorViewModel = viewModel()
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -56,7 +59,7 @@ fun CalculatorScreen(
         innerPadding ->
         CalculatorContent(
             modifier = Modifier.padding(innerPadding),
-            // TODO: viewModel
+            viewModel = viewModel
         )
 
     }
@@ -65,14 +68,17 @@ fun CalculatorScreen(
 @Composable
 fun CalculatorContent(
     modifier: Modifier = Modifier,
-    // TODO: viewModel
+    viewModel: CalculatorViewModel
 ) {
+    val equationText by viewModel.equationText.collectAsStateWithLifecycle()
+    val resultText by viewModel.resultText.collectAsStateWithLifecycle()
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.End
     ) {
         Text(
-            text = "0",
+            text = equationText,
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 5,
@@ -85,7 +91,7 @@ fun CalculatorContent(
         )
 
         Text(
-            text = "0",
+            text = resultText,
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 2,
@@ -104,7 +110,7 @@ fun CalculatorContent(
                 CalculatorButton(
                     btn = it,
                     onClick = {
-                        //TODO: viewModel.onButtonClick
+                        viewModel.onButtonClick(it)
                     }
                 )
             }
