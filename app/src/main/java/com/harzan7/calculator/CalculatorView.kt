@@ -110,7 +110,14 @@ fun CalculatorContent(
                 CalculatorButton(
                     btn = it,
                     onClick = {
-                        viewModel.onButtonClick(it)
+                        // handle special characters
+                        when (it) {
+                            "−" -> viewModel.onButtonClick("-")
+                            "×" -> viewModel.onButtonClick("*")
+                            "÷" -> viewModel.onButtonClick("/")
+                            "•" -> viewModel.onButtonClick(".")
+                            else -> viewModel.onButtonClick(it)
+                        }
                     }
                 )
             }
